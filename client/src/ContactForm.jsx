@@ -5,6 +5,8 @@ function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,7 +17,7 @@ function ContactForm() {
     setLoading(true);
     setStatus('');
     try {
-      const response = await axios.post('http://localhost:5000/api/send', form);
+      const response = await axios.post(`${API_URL}/api/send`, form);
       if (response.data.success) {
         setStatus('Message sent successfully!');
         setForm({ name: '', email: '', message: '' });
