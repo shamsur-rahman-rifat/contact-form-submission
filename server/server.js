@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const path = require('path');
 
 const app = express();
 app.use(cors());
@@ -32,6 +33,14 @@ app.post('/api/send', async (req, res) => {
     console.error(err);
     res.status(500).json({ success: false, message: 'Failed to send email' });
   }
+});
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Catch-all handler for any route that isn't an API endpoint
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
